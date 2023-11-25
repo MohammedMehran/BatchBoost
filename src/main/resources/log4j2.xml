@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="log-path">${env:CSD_MF_LOG_DIR}</Property>
+        <Property name="log-level">${env:HACK_LOG_LEVEL:-debug}</Property>
+    </Properties>
+    <Appenders>
+
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+        <!-- Rolling File Appender -->
+        <RollingFile name="RollingFile">
+            <FileName>${log-path}/hackathon.log</FileName>
+            <FilePattern>${log-path}/hackathon_dump/%d{yyyy-MM-dd-hh}-%i.log.zip</FilePattern>
+            <PatternLayout>
+                <Pattern>%d{yyyy-MMM-dd HH:mm:ss.SSS a} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="5" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.temenos.hackathon.bulkprocess" level="${log-level}" additivity="false">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+       <!-- <Root level="error"> </Root> -->
+    </Loggers>
+</Configuration>
